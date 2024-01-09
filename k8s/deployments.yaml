@@ -18,11 +18,10 @@ spec:
     spec:
       containers:
       - name: app-inference-deployment
-        image: dalbamm/240109-app-inference
         resources:
           limits:
             memory: "1Gi"
             cpu: "2000m"
-
         ports:
         - containerPort: 8000
+        image: dalbamm/240109-app-inference
