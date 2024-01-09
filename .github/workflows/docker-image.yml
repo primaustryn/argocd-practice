@@ -17,13 +17,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - uses: actions/checkout@v3
-      - name: Build the Docker image
-        run: bash build.sh ${{ github.sha }}
+      # - uses: actions/checkout@v3
+      # - name: Build the Docker image
+      #   run: bash build.sh ${{ github.sha }}
 
       - uses: actions/checkout@v3
         with:
-          repository: argocd-k8s-configs
+          repository: primaustryn/argocd-k8s-configs
           ref: 'main'
           token:  ${{ secrets.ARGOCD_GITHUB_TOKEN }}
           
