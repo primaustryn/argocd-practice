@@ -1,41 +1,18 @@
 from flask import Flask
 from flask import request
 import inferencer as inf
-import json
 
 app = Flask(__name__)
 
 inferencer = inf.Inferencer()
 #inferencer.set_option()
+index_html=''
+with open('index.html','r', encoding='utf-8') as f:
+    index_html = f.read()
 
 @app.route('/')
 def hello_world():
-    return '''
-<html>
-<script>
-const input = document.getElementById('input_img')
-const output = document.getElementById('output')
-
-document.getElementById('input_img').addEventListener('input', (event) => {
-  const files = event.target.files
-  output.textContent = Array.from(files).map(file => file.name).join('\n')
-})
-</script>
-<body>
-<center>
-<h1>Demo on GitOps with ArgoCD and Github Actions.</h1> <br>
-<br>
-<img src="https://github.com/tanmaybhandge/CICD_Application_K8s/blob/main/itsworking.jpeg?raw=true">
-<label for="mnist-image">값을 추론할 숫자 이미지를 업로드해주세요:
-  <input type="file"
-         id="input_img"
-         accept="image/png, image/jpeg">
-</label><br/>
-<label id="output"></label>
-</center>
-</body>
-</html>
-'''
+    return index_html
 
 @app.route('/inference', methods=['POST'])
 def inference_uploaded_file():

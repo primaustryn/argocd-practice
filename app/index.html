@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<body>
+<center>
+<h1>MNIST Inference App</h1> <br>
+<br>
+<label for="mnist-image">값을 추론할 숫자 이미지를 업로드해주세요 <br/>
+</label><br/>
+<input type="file"
+         id="input_img"
+         accept="image/png, image/jpeg">
+<br/><br/>
+<div id="preview"></div>
+<h2 id="output"></h2>
+</center>
+</body>
+<script>
+const input = document.getElementById('input_img')
+const preview = document.getElementById('preview')
+function labelOutput(content){
+    const output = document.getElementById('output')
+    output.textContent = "추론 결과: "+content
+}
+function inferenceImage(file){
+    var formdata = new FormData();
+    // console.log(file)
+    formdata.append("img", file, file.name);
+
+    var requestOptions = {
+    method: 'POST',
+    body: formdata,
+    redirect: 'follow'
+    };
+
+    fetch("/inference", requestOptions)
+    .then(response => response.text())
+    .then(result =>         
+        labelOutput(JSON.parse(result)["result"])
+    )
+    .catch(error => {
+        console.log('error', error)
+        labelOutput(`에러 발생 - ${error}`)
+    }
+    );
+}
+
+function handleFiles(files) {
+//   for (let i = 0; i < files.length; i++) {
+    // const file = files[i];
+    const file = files;
+
+    if (!file.type.startsWith("image/")) {
+    //   continue;
+    return
+    }
+
+    const img = document.createElement("img");
+    img.classList.add("obj");
+    img.file = file;
+    // preview.removeChild(preview.childNodes[0])
+    preview.appendChild(img); // Assuming that "preview" is the div output where the content will be displayed.
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+//   }
+}
+input.addEventListener('input', (event) => {
+  const files = event.target.files
+  console.log(files)
+  handleFiles(files[files.length-1])
+  inferenceImage(files[files.length-1])
+})
+</script>
+</html>
