@@ -13,10 +13,10 @@ def hello_world():
     return '''
 <html>
 <script>
-const input = document.getElementById('file')
+const input = document.getElementById('input_img')
 const output = document.getElementById('output')
 
-document.getElementById('file').addEventListener('input', (event) => {
+document.getElementById('input_img').addEventListener('input', (event) => {
   const files = event.target.files
   output.textContent = Array.from(files).map(file => file.name).join('\n')
 })
@@ -28,10 +28,10 @@ document.getElementById('file').addEventListener('input', (event) => {
 <img src="https://github.com/tanmaybhandge/CICD_Application_K8s/blob/main/itsworking.jpeg?raw=true">
 <label for="mnist-image">값을 추론할 숫자 이미지를 업로드해주세요:
   <input type="file"
-         id="file"
+         id="input_img"
          accept="image/png, image/jpeg">
-</label>
-<label id="output"/>
+</label><br/>
+<label id="output"></label>
 </center>
 </body>
 </html>
