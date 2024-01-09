@@ -21,7 +21,15 @@ jobs:
         name: Login to Github
         with:
           repo-token: ${{ secrets.ARGOCD_GITHUB_TOKEN }}
-          
+          run: |
+            IMAGE_REPOSITORY="dalbamm/240109-app-inference"
+            DEPLOYMENT_YAML="deployments.yaml"
+            VERSION=$(git rev-parse --short ${{ github.sha }})
+            git clone git@github.com:primaustryn/argocd-k8s-configs.git
+            cd argocd-k8s-configs && sed -i "s/$IMAGE_REPOSITORY/$IMAGE_REPOSITORY:$VERSION/g" $DEPLOYMENT_YAML
+            git add $DEPLOYMENT_YAML && git commit -m "update commit hash: $VERSION($DEPLOYMENT_YAML)"
+            git push origin main
+
       - uses: actions/checkout@v3
       - name: Build the Docker image
         run: bash build.sh ${{ github.sha }}
