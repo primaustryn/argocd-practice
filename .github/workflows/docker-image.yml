@@ -33,6 +33,7 @@ jobs:
           # Only run on main branch push (e.g. pull request merge).
         if: github.event_name == 'push'
         run: |
+          git clone git@github.com:primaustryn/argocd-k8s-configs.git
           git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
           git config --global user.email "primaustryn@users.noreply.github.com"
           sed '/240109-app-inference/d' deployments.yaml > deployments.new.yaml
