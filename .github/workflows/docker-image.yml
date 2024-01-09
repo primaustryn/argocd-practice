@@ -17,19 +17,25 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - uses: actions/labeler@v4
-        name: Login to Github
-        with:
-          repo-token: ${{ secrets.ARGOCD_GITHUB_TOKEN }}
-          run: |
-            IMAGE_REPOSITORY="dalbamm/240109-app-inference"
-            DEPLOYMENT_YAML="deployments.yaml"
-            VERSION=$(git rev-parse --short ${{ github.sha }})
-            git clone git@github.com:primaustryn/argocd-k8s-configs.git
-            cd argocd-k8s-configs && sed -i "s/$IMAGE_REPOSITORY/$IMAGE_REPOSITORY:$VERSION/g" $DEPLOYMENT_YAML
-            git add $DEPLOYMENT_YAML && git commit -m "update commit hash: $VERSION($DEPLOYMENT_YAML)"
-            git push origin main
-
       - uses: actions/checkout@v3
       - name: Build the Docker image
         run: bash build.sh ${{ github.sha }}
+
+      - uses: actions/checkout@v3
+        with:
+          repository: argocd-k8s-configs
+          ref: 'main'
+          token:  ${{ secrets.ARGOCD_GITHUB_TOKEN }}
+          
+      - name: setup git config and push to config repository
+        run: |
+          git config user.name "GitHub Actions Bot(repo:argocd-practice)"
+          git config user.email "bingo13@snu.ac.kr"
+          IMAGE_REPOSITORY="dalbamm/240109-app-inference"
+          DEPLOYMENT_YAML="deployments.yaml"
+          VERSION=$(git rev-parse --short ${{ github.sha }})
+          echo $IMAGE_REPOSITORY
+          echo $DEPLOYMENT_YAML
+          echo $VERSION
+          sed -i "s/$IMAGE_REPOSITORY/$IMAGE_REPOSITORY:$VERSION/g" $DEPLOYMENT_YAML
+          git add $DEPLOYMENT_YAML && git commit -m "update commit hash: $VERSION($DEPLOYMENT_YAML)"
