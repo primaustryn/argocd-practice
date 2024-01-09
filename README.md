@@ -25,7 +25,7 @@ docker desktop 설치 필요
 ./build_local.sh && ./run.sh
 ```
 ### Endpoint
-http://localhost:8000
+- http://localhost:8000
 
 # 세부 사항
-[노션 페이지 참조(클릭))](https://primstryn.notion.site/CI-CD-b86b73e478c0422487f347d15685927e)
+[노션 페이지 참조(클릭)](https://primstryn.notion.site/CI-CD-b86b73e478c0422487f347d15685927e)
