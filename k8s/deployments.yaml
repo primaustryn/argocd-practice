@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-inference-deployment
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-inference-deployment
+
+  template:
+    metadata:
+      labels:
+        app: app-inference-deployment
+        env: stage
+
+    spec:
+      containers:
+      - name: app-inference-deployment
+        image: dalbamm/240109-app-inference
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "2000m"
+
+        ports:
+        - containerPort: 8000
